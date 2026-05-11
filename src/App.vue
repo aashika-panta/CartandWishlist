@@ -3,7 +3,6 @@
   <div>
 
     <nav class="flex gap-5 p-5 bg-gray-100">
-
       <router-link to="/">
         Products
       </router-link>

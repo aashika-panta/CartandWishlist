@@ -2,11 +2,13 @@
 import { ref } from "vue";
 
 import { useCartStore } from "../stores/Cart";
-import { Heart } from "lucide-vue-next";
+import { Heart, Search } from "lucide-vue-next";
 import { useWishlistStore } from "../stores/wishlist";
 
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
+const search = ref("");
+
 const products = ref([
   {
     id: 1,
@@ -79,20 +81,30 @@ const products = ref([
     price: 40,
   },
 ]);
+// FILTER FUNCTION
+function filteredProducts() {
+  return products.value.filter((product) =>
+    product.name.toLowerCase().includes(search.value.toLowerCase()),
+  );
+}
 </script>
 
 <template>
-  <!-- Toast Message -->
-  <div
-    v-if="cartStore.message"
-    class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg"
-  >
-    {{ cartStore.message }}
+  <div class="relative w-full max-w-md m-auto mt-5">
+    <Search class="absolute left-3 top-2.5 text-gray-400" size="18" />
+
+    <input
+      type="text"
+      v-model="search"
+      placeholder="Search products..."
+      class="w-full pl-10 pr-4 py-2 border rounded-full shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+    />
   </div>
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
     <!-- Card -->
+
     <div
-      v-for="product in products"
+      v-for="product in filteredProducts()"
       :key="product.id"
       class="bg-white border rounded-lg shadow-sm hover:shadow-md transition overflow-hidden"
     >

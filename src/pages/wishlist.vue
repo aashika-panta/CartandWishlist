@@ -10,17 +10,10 @@ const isFav = (id) => wishlistStore.isInWishlist(id);
 </script>
 
 <template>
-     <!-- Toast Message -->
-  <div
-    v-if="cartStore.message"
-    class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg"
-  >
-    {{ cartStore.message }}
-  </div>
-  <div class="p-6">
+  <div class="p-6 bg-gray-50">
     <h1 class="text-2xl font-bold mb-6">Wishlist</h1>
-   
 
+    <!-- EMPTY -->
     <div
       v-if="wishlistStore.wishlist.length === 0"
       class="text-center text-gray-500 mt-10"
@@ -28,38 +21,43 @@ const isFav = (id) => wishlistStore.isInWishlist(id);
       No items in wishlist
     </div>
 
-    <div
-      v-else
-      class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4"
-    >
+    <!-- GRID UI (SIMPLE + CLEAN) -->
+    <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       <div
         v-for="item in wishlistStore.wishlist"
         :key="item.id"
-        class="bg-white border rounded-lg shadow-sm"
+        class="bg-white rounded-xl shadow hover:shadow-md transition overflow-hidden"
       >
-        <img :src="item.img" class="w-full h-28 object-cover" />
+        <!-- IMAGE -->
+        <img :src="item.img" class="w-full h-32 object-cover" />
 
+        <!-- CONTENT -->
         <div class="p-3">
-          <h2 class="text-sm font-semibold">{{ item.name }}</h2>
+          <h2 class="text-sm font-semibold truncate">
+            {{ item.name }}
+          </h2>
 
-          <p class="text-xs text-gray-500">{{ item.description }}</p>
+          <p class="text-xs text-gray-500 mt-1 line-clamp-2">
+            {{ item.description }}
+          </p>
 
           <div class="flex justify-between items-center mt-3">
             <span class="text-green-600 font-bold"> ${{ item.price }} </span>
 
-            <div class="flex gap-3">
-              <!-- remove / toggle wishlist -->
+            <div class="flex gap-2 items-center">
+              <!-- WISHLIST -->
               <button @click="wishlistStore.toggleWishlist(item)">
                 <Heart
                   :fill="isFav(item.id) ? 'red' : 'none'"
                   :color="isFav(item.id) ? 'red' : 'gray'"
+                  size="18"
                 />
               </button>
 
-              <!-- ADD TO CART (FIXED BELOW) -->
+              <!-- CART -->
               <button
                 @click="cartStore.addToCart(item)"
-                class="bg-blue-600 text-white px-2 py-1 text-xs rounded"
+                class="bg-blue-600 text-white text-xs px-2 py-1 rounded"
               >
                 Add to cart
               </button>
